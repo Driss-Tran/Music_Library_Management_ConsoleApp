@@ -1,0 +1,108 @@
+package data_access_object;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import database.JDBCConnection;
+
+public class UserDAO implements UserDAOInterface{
+	public static UserDAO getUserMethod() {
+		return new UserDAO();
+	}
+	
+	@Override
+	public boolean login(String username, String password) {
+		// TODO Auto-generated method stub
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "select * from user where username = ? and password =? and type = ?";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			
+			prepare.setString(1, username);
+			prepare.setString(2, password);
+			prepare.setString(3,"0");
+			ResultSet check = prepare.executeQuery();
+			while(check.next()) {
+				String name = check.getString("username");
+				String pass = check.getString("password");
+				
+				if(!name.equals("") && !pass.equals("")) {
+					return true;
+				}
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public int register(String username, String password, String confirmPassword) {
+		// TODO Auto-generated method stub
+		int flag = 1;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "select * from user where username = ? type = ?";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			
+			prepare.setString(1, username);
+			prepare.setString(2,"0");
+			ResultSet check = prepare.executeQuery();
+			while(check.next()) {
+				String name = check.getString("username");
+				if(!name.equals("")) {
+					flag = 0;
+				}
+			}
+			if(!password.equals(confirmPassword)) {
+				flag =  2;
+			}
+			if(flag==1) {
+				String register_sql = "INSERT INTO USER(username, password,confirmpassword,types) values(?,?,?,?)";
+				PreparedStatement st = conn.prepareStatement(register_sql);
+				
+				st.setString(1, username);
+				st.setString(2,"0");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean adminLogin(String username, String password) {
+		// TODO Auto-generated method stub
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "select * from user where username = ? and password =? and type = ?";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			
+			prepare.setString(1, username);
+			prepare.setString(2, password);
+			prepare.setString(3, "1");
+			
+			ResultSet check =  prepare.executeQuery();
+			while(check.next()) {
+				String name = check.getString("username");
+				String pass = check.getString("password");
+				
+				if(!name.equals("") && !pass.equals("")) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+}

@@ -1,0 +1,186 @@
+package data_access_object;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+
+import database.JDBCConnection;
+import entities.Track;
+
+public class TrackDAO implements TrackDAOInterface<Track>{
+	//Implement all methods defined in Interface.
+	
+	public static TrackDAO getTrackMethod() {
+		return new TrackDAO();
+	}
+	
+	@Override
+	public int addTrack(Track track) {
+		// TODO Auto-generated method stub
+		int rs = 0;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "INSERT INTO TRACKS(title,artist,album,genre,release_year,duration) VALUES (?,?,?,?,?,?)";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			prepare.setString(1, track.getTitle());
+			prepare.setString(2, track.getArtist());
+			prepare.setString(3, track.getAlbum());
+			prepare.setString(4, track.getGenre());
+			prepare.setString(5, track.getRelease_year());
+			prepare.setString(6, track.getDuration());
+			rs = prepare.executeUpdate();
+			JDBCConnection.getConnection().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	@Override
+	public Track viewDetails(int index,String value) {
+		// TODO Auto-generated method stub
+		Track track = new Track();
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "";
+			if(index ==1) {
+				sql = "SELECT * FROM TRACKS WHERE title = ?";
+			}else {
+				sql = "SELECT * FROM TRACKS WHERE artist = ?";
+			}
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			prepare.setString(1, value.trim());
+			ResultSet rs = prepare.executeQuery();
+			while(rs.next()) {
+				track.setIdTracks(rs.getInt(1));
+				track.setTitle(rs.getString(2));
+				track.setArtist(rs.getString(3));
+				track.setAlbum(rs.getString(4));
+				track.setGenre(rs.getString(5));
+				track.setRelease_year(rs.getString(6));
+				track.setDuration(rs.getString(7));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return track;
+	}
+
+	@Override
+	public int updateTrack(int id,Track value) {
+		// TODO Auto-generated method stub
+		int rs = 0;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "UPDATE tracks set title = ?, artist = ? ,album = ?, genre = ?, release_year = ?, duration = ? where idTracks = ?";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			
+			prepare.setString(1,value.getTitle().trim());
+			prepare.setString(2,value.getArtist().trim());
+			prepare.setString(3,value.getAlbum().trim());
+			prepare.setString(4,value.getGenre());
+			prepare.setString(5,value.getRelease_year());
+			prepare.setString(6,value.getDuration());
+			
+			prepare.setInt(7,id);
+			
+			rs = prepare.executeUpdate();
+
+			}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	@Override
+	public int deleteTrack(int id,Track value) {
+		// TODO Auto-generated method stub
+		int rs = 0;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "Delete from tracks where idTracks = ?";
+			String delsql = "DELETE FROM PLAYLISTS WHERE TRACK_ID = (select idTracks from Tracks where  where idTracks = ?)";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			PreparedStatement prepare1 = conn.prepareStatement(delsql);
+			prepare.setInt(1,id);
+			prepare1.setInt(1,id);
+			rs = prepare.executeUpdate();
+			prepare1.excuteUpdate();
+			}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	@Override
+	public ArrayList<Track> viewAll() {
+		// TODO Auto-generated method stub
+		ArrayList<Track> trackList = new ArrayList<>();
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			Statement st = conn.createStatement();
+			String sql = "SELECT * FROM TRACKS";
+			
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				int id = rs.getInt(1);
+				String title = rs.getString(2);
+				String artist = rs.getString(3);
+				String album = rs.getString(4);
+				String genre = rs.getString(5);
+				String release_year = rs.getString(6);
+				String duration = rs.getString(7);
+				
+				Track track = new Track(title,artist,album,genre,release_year,duration);
+				track.setIdTracks(id);
+				trackList.add(track);
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return trackList;
+	}
+
+	@Override
+	public ArrayList<Track> searchByUser(int index, String value) {
+		// TODO Auto-generated method stub
+		ArrayList<Track> tracks = new ArrayList<>();
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			Statement st = conn.createStatement();
+			String sql = "SELECT * FROM TRACKS";
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				if(index==1 && rs.getString("title").toLowerCase().indexOf(value.toLowerCase())!=-1) {
+					Track track = new Track(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+					tracks.add(track);
+				}else if(index==2 && rs.getString("artist").toLowerCase().indexOf(value.toLowerCase())!=-1) {
+					Track track = new Track(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+					tracks.add(track);
+				}else if(index==3 && rs.getString("album").toLowerCase().indexOf(value.toLowerCase())!=-1) {
+					Track track = new Track(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+					tracks.add(track);
+				}else if(index==4 && rs.getString("genre").toLowerCase().indexOf(value.toLowerCase())!=-1) {
+					Track track = new Track(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+					tracks.add(track);
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tracks;
+	}
+
+
+}

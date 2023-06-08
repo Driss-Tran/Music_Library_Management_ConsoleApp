@@ -1,0 +1,21 @@
+package musicApp;
+import java.sql.*;
+public class App {
+	public static void main(String []args) throws Exception{
+		String url = "jdbc:mysql://localhost:3000/music_app";
+		String name = "root";
+		String pass = "root";
+		String query = "select * from tracks";
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection(url,name,pass);
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery(query);
+		
+		rs.next();
+		String title = rs.getString(2);
+		System.out.print(title);
+		st.close();
+		conn.close();
+		
+	}
+}

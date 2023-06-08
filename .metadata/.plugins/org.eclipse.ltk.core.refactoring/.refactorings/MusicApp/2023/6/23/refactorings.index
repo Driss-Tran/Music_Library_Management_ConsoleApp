@@ -1,0 +1,6 @@
+1686026742715	Rename package 'MusicApp'
+1686029775518	Rename type 'Tracks'
+1686030448986	Delete element
+1686062455075	Rename type 'DAOInterface'
+1686131722505	Encapsulate field 'confirmpassword'
+1686133874501	Rename type 'UserPlaylistInterface'

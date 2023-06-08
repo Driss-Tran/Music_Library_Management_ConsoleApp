@@ -1,0 +1,43 @@
+package entities;
+
+public class Playlist {
+	private int id;
+	private String name_playlists;
+	private int track_id;
+	private int user_id;
+	
+	
+	
+	public Playlist(String name_playlists, int track_id, int user_id) {
+		super();
+		this.name_playlists = name_playlists;
+		this.track_id = track_id;
+		this.user_id = user_id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName_playlists() {
+		return name_playlists;
+	}
+	public void setName_playlists(String name_playlists) {
+		this.name_playlists = name_playlists;
+	}
+	public int getTrack_id() {
+		return track_id;
+	}
+	public void setTrack_id(int track_id) {
+		this.track_id = track_id;
+	}
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+	
+	
+}

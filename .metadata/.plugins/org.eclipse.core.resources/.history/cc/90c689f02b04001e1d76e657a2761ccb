@@ -1,0 +1,21 @@
+package database;
+
+import java.sql.*;
+
+public class JDBCConnection {
+	public static Connection getConnection() {
+		Connection conn = null;
+		
+		try {
+			String url = "jdbc:mysql://localhost:3000/music_app";
+			String name = "root";
+			String pass = "root";
+			String query = "select * from tracks";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		conn = DriverManager.getConnection(url,name,pass);
+	}
+}

@@ -1,0 +1,6 @@
+package data_access_object;
+
+public interface UserPlaylistInterface<T> {
+	public int addPlaylists(T value);
+	
+}

@@ -1,0 +1,20 @@
+package data_access_object;
+
+import java.util.ArrayList;
+
+import entities.Track;
+
+public interface DAOInterface<T> {
+	// Defining some methods of Application
+	
+	public int addTrack(T value);
+	
+	public Track viewDetails(int index,String value); 
+	
+	public int updateTrack(int id,T value);
+	
+	public int deleteTrack(T value);
+	
+	
+	public ArrayList<T> viewAll();
+}

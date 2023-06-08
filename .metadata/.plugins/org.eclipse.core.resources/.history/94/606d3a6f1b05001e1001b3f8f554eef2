@@ -1,0 +1,9 @@
+package data_access_object;
+
+public interface UserDAOInterface {
+	public boolean login(String username, String password);
+	
+	public boolean adminLogin(String username,String password);
+	
+	public int register(String username, String password,String confirmPassword);
+}

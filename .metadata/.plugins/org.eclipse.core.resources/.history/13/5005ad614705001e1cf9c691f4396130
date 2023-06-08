@@ -1,0 +1,146 @@
+package data_access_object;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import database.JDBCConnection;
+import entities.UserPlaylist;
+
+public class UserPlaylistDAO implements UserPlaylistDAOInterface<UserPlaylist>{
+
+	public static UserPlaylistDAO getUserPlaylistMethod() {
+		return new UserPlaylistDAO();
+	}
+	
+	@Override
+	public int createPlaylists(UserPlaylist value) {
+		// TODO Auto-generated method stub
+		
+		int flag = 1;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			
+			String duplicateSQL =  "SELECT * FROM USERPLAYLISTS where name_playlist = ? and user_id = ? ";
+			String insertSQL = "INSERT INTO USERPLAYLISTS(name_playlist,user_id) values (?,?)";
+			PreparedStatement dupst = conn.prepareStatement(duplicateSQL);
+			PreparedStatement insst = conn.prepareStatement(insertSQL);
+			
+			dupst.setString(1, value.getName_playlist());
+			dupst.setInt(2, value.getUser_id());
+			ResultSet check = dupst.executeQuery();
+			while(check.next()) {
+				String name = check.getString("name_playlist");
+				if(!name.equals("")) {
+					flag =  -1;
+				}
+			}
+			if(flag!= -1) {
+				insst.setString(1, value.getName_playlist());
+				insst.setInt(2, value.getUser_id());
+				insst.executeUpdate();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return flag;
+	}
+
+	@Override
+	public ArrayList<UserPlaylist> showAll(int id) {
+		// TODO Auto-generated method stub
+		ArrayList<UserPlaylist> playlists = new ArrayList<>();
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "SELECT * FROM USERPLAYLISTS WHERE USER_ID = ?";
+			
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				int playlistID = rs.getInt("id");
+				String name_playlist = rs.getString("name_playlist");
+				int user_id = rs.getInt("user_id");
+				
+				UserPlaylist playlist = new UserPlaylist(playlistID,name_playlist,user_id);
+				playlists.add(playlist);
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return playlists;
+	}
+
+	@Override
+	public ArrayList<UserPlaylist> searchPlaylist(int type, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deletePlaylist( UserPlaylist value) {
+		// TODO Auto-generated method stub
+		int flag = 1;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String delsql = "DELETE FROM USERPLAYLISTS WHERE NAME_PLAYLIST = ? AND USER_ID = ?";
+			
+			String selsql  = "SELECT * FROM USERPLAYLISTS WHERE NAME_PLAYLIST = ? AND USER_ID = ?";
+			PreparedStatement prepare = conn.prepareStatement(selsql);
+			PreparedStatement delprep = conn.prepareStatement(delsql);
+			
+			
+			prepare.setString(1,value.getName_playlist());
+			prepare.setInt(2,value.getUser_id());
+			ResultSet rs = prepare.executeQuery();
+			if (rs.next()) {
+				delprep.setString(1,value.getName_playlist());
+				delprep.setInt(2,value.getUser_id());
+				delprep.executeUpdate();
+			} else {
+				flag =  -1;
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
+		
+	}
+
+	@Override
+	public UserPlaylist viewDetailPLaylist(String name) {
+		// TODO Auto-generated method stub
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "SELECT * FROM PLAYLISTS WHERE NAME_PLAYLIST = ?";
+			
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			prepare.setString(1, value.trim());
+			ResultSet rs = prepare.executeQuery();
+			while(rs.next()) {
+				track.setIdTracks(rs.getInt(1));
+				track.setTitle(rs.getString(2));
+				track.setArtist(rs.getString(3));
+				track.setAlbum(rs.getString(4));
+				track.setGenre(rs.getString(5));
+				track.setRelease_year(rs.getString(6));
+				track.setDuration(rs.getString(7));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+}

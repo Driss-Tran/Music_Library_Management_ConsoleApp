@@ -1,0 +1,13 @@
+package data_access_object;
+
+import entities.Playlist;
+
+public class PlaylistDAO implements PlaylistDAOInterface<Playlist>{
+
+	@Override
+	public int addMusicToPlaylist(Playlist value) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}

@@ -1,0 +1,10 @@
+package entities;
+
+public class Playlist {
+	private int id;
+	private String name_playlists;
+	private int track_id;
+	private int user_id;
+	
+	
+}

@@ -1,0 +1,10 @@
+package database;
+
+import java.sql.*;
+
+public class JDBCConnection {
+	public static Connection getConnection() {
+		Connection conn = null;
+		
+	}
+}

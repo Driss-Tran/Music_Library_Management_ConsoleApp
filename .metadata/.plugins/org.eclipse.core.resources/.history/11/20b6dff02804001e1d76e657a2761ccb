@@ -1,0 +1,9 @@
+package musicApp;
+import java.sql.*;
+public class App {
+	public static void main(String []args) throws Exception{
+		private String url = "jdbc:mysql://localhost:3000/music_app";
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conn = DriverManager.getConnection(url,name,pass);
+	}
+}

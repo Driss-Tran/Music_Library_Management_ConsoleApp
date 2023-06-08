@@ -1,0 +1,45 @@
+package entities;
+
+public class Playlist {
+	private int id;
+	private int userpl_id;
+	private int track_id;
+	private int user_id;
+	
+	
+	
+	public Playlist(int id, int userpl_id, int track_id, int user_id) {
+		super();
+		this.id = id;
+		this.userpl_id = userpl_id;
+		this.track_id = track_id;
+		this.user_id = user_id;
+	}
+	public Playlist(int userpl_id, int track_id, int user_id) {
+		super();
+		this.userpl_id = userpl_id;
+		this.track_id = track_id;
+		this.user_id = user_id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getTrack_id() {
+		return track_id;
+	}
+	public void setTrack_id(int track_id) {
+		this.track_id = track_id;
+	}
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+	
+	
+}

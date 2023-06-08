@@ -1,0 +1,37 @@
+package data_access_object;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import database.JDBCConnection;
+import entities.Playlist;
+
+public class PlaylistDAO implements PlaylistDAOInterface<Playlist>{
+	
+	public static PlaylistDAO getPlaylistMethod() {
+		return new PlaylistDAO();
+	}
+	
+	@Override
+	public int addMusicToPlaylist(Playlist playlist) {
+		// TODO Auto-generated method stub
+		int rs = 0;
+		try {
+			Connection conn = JDBCConnection.getConnection();
+			String sql = "INSERT INTO PLAYLISTS(userpl_id,user_id,track_id) VALUES (?,?,?)";
+			PreparedStatement prepare = conn.prepareStatement(sql);
+			prepare.setInt(1, playlist.getUserpl_id());
+			prepare.setInt(2, playlist.getUser_id());
+			prepare.setInt(3, playlist.getTrack_id());
+			rs = prepare.executeUpdate();
+			rs = prepare.executeUpdate();
+			JDBCConnection.getConnection().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+}

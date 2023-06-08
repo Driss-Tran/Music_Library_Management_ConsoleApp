@@ -1,0 +1,11 @@
+package data_access_object;
+
+import java.util.ArrayList;
+
+public interface UserPlaylistInterface<T> {
+	public int addPlaylists(T value);
+	
+	public ArrayList<T> showAll(T value);
+
+	
+}
