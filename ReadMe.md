@@ -12,7 +12,6 @@
 # Application Introduction
 ## # Overview of My Applications
 * I used Java to build this application.
-* My app is built to meet the requirements of EMVN assignment.
 * My app has two types of user : **normal user** and **admin**.
 * User can use my app by command line interface.
 ## # Information to Login :
